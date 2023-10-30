@@ -1,0 +1,107 @@
+<%- include("header") %>
+        </div> 
+      <main>
+       
+</div>
+<div style="margin-left:20%">
+<div style="padding-left: 85%;"> <button class="info-button" onclick="showPopup()" style="margin-top:30px"><b>Start Payment</b></button></div>
+<div id="popup" class="popup2">
+  <div class="close-btn" onclick="closePopup()">X</div>
+  <p>Click Next to proceed with payment</p>
+  <input type="text" id="paymentInput" placeholder="Enter MetaMask Address..">
+  <button onclick="submitForm()">Next</button>
+</div> 
+<div class="hr"></div>
+  <div class="col-lg-11">
+  <p class="info-paragraph" style="margin-top:20px">Dear Residents,</p>
+
+    <p class="info-paragraph">We are excited to introduce our online payment system, designed to simplify the dormitory payment process. Follow these steps to make your payments conveniently and securely through our website:</p>
+
+   
+  <p class="section-header">1. Accessing the Payment Portal:</p>
+
+  <p class="info-paragraph">Once logged in, navigate to the "Payments" or "Billing" section of your resident dashboard. Here, you will find options related to your payments.</p>
+
+  <p class="section-header">2. Selecting Payment Type:</p>
+
+  <p class="info-paragraph">Choose the type of payment you want to make (monthly rent, utility charges, etc.) and enter the respective amount. The system will generate an invoice detailing the payment breakdown.</p>
+
+  <p class="section-header">3. Payment Methods:</p>
+
+  <p class="info-paragraph">Select your preferred payment method: Credit/Debit Card, Online Banking, or other electronic payment options available. Fill in the necessary payment details securely.</p>
+
+  <p class="section-header">4. Confirmation and Receipt:</p>
+
+  <p class="info-paragraph">After a successful transaction, you will receive an email confirmation and a digital receipt on your resident dashboard. It's important to keep a copy of this receipt for your records.</p>
+
+  <p class="section-header">5. Auto-Pay Setup (Optional):</p>
+
+  <p class="info-paragraph">For your convenience, consider setting up an auto-payment option. You can schedule recurring payments to ensure your monthly dues are paid on time without manual intervention.</p>
+
+  <p class="section-header">6. Technical Support:</p>
+
+  <p class="info-paragraph">If you encounter any issues or have questions about the online payment process, our technical support team is available to assist you. Contact them via email at [Support Email Address] or call our helpline at [Support Phone Number].</p>
+
+  <p class="section-header">7. Security Measures:</p>
+
+  <p class="info-paragraph">Rest assured, our online payment system is encrypted and secure, ensuring the safety of your financial information. We prioritize your privacy and security in all online transactions.</p>
+
+  <p class="info-paragraph warning">Thank you for embracing this convenient payment method. We believe it will enhance your dormitory experience by saving you time and effort. Should you require any further assistance, please do not hesitate to reach out.</p>
+
+    <p class="info-paragraph contact-info">Warm regards,<br>
+    UniPay Wallet team<br>
+    Astana IT University<br>
+    Email: unipay_wallet@bk.ru<br>
+    Phone: +7 777 777 77 77</p>
+  </div>
+</div>
+<div class="solid"></div>
+<div class="footer-basic" style="margin-left: 15%;">
+          
+  <div class="social"><a href="https://www.instagram.com/"><i class="icon ion-social-instagram"></i></a><a href="https://ru.linkedin.com/"><i class="icon ion-social-linkedin"></i></a><a href="https://twitter.com"><i class="icon ion-social-twitter"></i></a><a href="https://ru-ru.facebook.com/"><i class="icon ion-social-facebook"></i></a></div>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Services</a></li>
+          <li class="list-inline-item"><a href="#">About</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+      </ul>
+  <p class="copyright">Shanyraq © 2022</p>
+
+</div></main>
+<script>
+  function showPopup() {
+    document.getElementById('popup').style.display = 'block';
+}
+function closePopup() {
+  document.getElementById('popup').style.display = 'none';
+}
+function submitForm() {
+    alert("WARNING! MetaMask will open");
+}
+  //Get the button
+  var mybutton = document.getElementById("myBtn");
+  
+  // When the user scrolls down 20px from the top of the document, show the button
+  window.onscroll = function() {scrollFunction()};
+  
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+  
+  // When the user clicks on the button, scroll to the top of the document
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+  </script>
+    <script src="js/myscript.js" charset="utf-8" ></script>
+    <script src="js/theme.js" charset="utf-8" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="jquery.min.js"></script>
+<script src="owlcarousel/owl.carousel.min.js"></script>
+
+</body>
