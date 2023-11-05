@@ -91,7 +91,7 @@ app.route("/login")
 
     const user = new User({
       username: req.body.username,
-      passwrod: req.body.password
+      password: req.body.password
     })
 
     req.login(user, function(err) {

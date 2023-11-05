@@ -1,0 +1,116 @@
+<%- include("header") %>
+        </div> 
+      <main>
+       
+</div>
+<div style="margin-left:20%">
+<div style="padding-left: 85%;"> <button class="info-button" onclick="showPopup()" style="margin-top:30px"><b>Start Payment</b></button></div>
+<div id="popup" class="popup2">
+  <div class="close-btn" onclick="closePopup()">X</div>
+  <p>Click Next to proceed with payment</p>
+  <input type="text" id="paymentInput" placeholder="Enter MetaMask Address..">
+  <button onclick="submitForm()">Next</button>
+</div> 
+<div class="hr"></div>
+  <div class="col-lg-11">
+    <p class="info-paragraph">Dear Students and Parents,</p>
+
+    <p class="info-paragraph">We understand that paying tuition fees is an essential part of your academic journey. To make the process convenient and efficient, we offer online payment options. Here's how you can pay your tuition fees securely through our website:</p>
+
+    <p class="section-header">STEP 1. Access the Student Portal:</p>
+
+    <p class="info-paragraph">Log in to the official student portal on our website using your unique username and password. If you haven't registered yet, follow the instructions to create an account.</p>
+
+    <p class="section-header">STEP 2. View Your Invoice:</p>
+
+    <p class="info-paragraph">Once logged in, navigate to the "Billing" or "Finances" section of the student portal. Here, you will find your tuition fee invoice for the current academic term. Review the invoice details carefully to understand the amount due and the deadline for payment.</p>
+
+    <p class="section-header">STEP 3. Choose Payment Method:</p>
+
+    <p class="info-paragraph">Select the payment method that suits you best. We accept online payments through various methods, including credit/debit cards, electronic funds transfer (EFT), and other secure online payment gateways. Choose the option that is most convenient for you.</p>
+
+    <p class="section-header">STEP 4. Enter Payment Details:</p>
+
+    <p class="info-paragraph">If you choose to pay by card, enter your credit/debit card information securely into the payment gateway. If you opt for EFT, you will need to enter the necessary bank account details. Ensure all details are accurate to prevent transaction issues.</p>
+
+    <p class="section-header">STEP 5. Verify Payment Information:</p>
+
+    <p class="info-paragraph">Double-check the payment details, including the payment amount and your personal information. Confirm that you are making the payment for the correct academic term and student ID. Verify the transaction before proceeding.</p>
+
+    <p class="section-header">STEP 6. Confirm and Complete Payment:</p>
+
+    <p class="info-paragraph">After verifying the payment details, confirm the transaction. Once confirmed, the payment will be processed. You will receive an email confirmation and a digital receipt for your records. Please keep this receipt for future reference.</p>
+
+    <p class="section-header">STEP 7. Payment Confirmation:</p>
+
+    <p class="info-paragraph">Check your student portal for payment confirmation. Most systems update the payment status in real-time. If there are any issues or delays in processing your payment, contact the finance department immediately for assistance.</p>
+
+    <p class="section-header">STEP 8. Set Up Recurring Payments (Optional):</p>
+
+    <p class="info-paragraph">For your convenience, consider setting up recurring payments for future tuition fees. Many online payment systems allow you to schedule automatic payments, ensuring timely payments for each academic term.</p>
+
+    <p class="section-header">STEP 9. Contact Support (If Needed):</p>
+
+    <p class="info-paragraph">If you encounter any technical issues during the payment process or have questions about your tuition fees, contact our finance department or technical support team. They can assist you with any concerns you may have.</p>
+
+    <p class="info-paragraph">Thank you for choosing the online payment option. We appreciate your cooperation in making the tuition fee payment process efficient and hassle-free. If you have any further inquiries, please do not hesitate to reach out.</p>
+
+  
+
+    <p class="info-paragraph contact-info">Warm regards,<br>
+    UniPay Wallet team<br>
+    Astana IT University<br>
+    Email: unipay_wallet@bk.ru<br>
+    Phone: +7 777 777 77 77</p>
+  </div>
+</div>
+<div class="solid"></div>
+<div class="footer-basic" style="margin-left: 15%;">
+          
+  <div class="social"><a href="https://www.instagram.com/"><i class="icon ion-social-instagram"></i></a><a href="https://ru.linkedin.com/"><i class="icon ion-social-linkedin"></i></a><a href="https://twitter.com"><i class="icon ion-social-twitter"></i></a><a href="https://ru-ru.facebook.com/"><i class="icon ion-social-facebook"></i></a></div>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Services</a></li>
+          <li class="list-inline-item"><a href="#">About</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+      </ul>
+  <p class="copyright">UniPay Wallet © 2023</p>
+
+</div></main>
+<script>
+  function showPopup() {
+    document.getElementById('popup').style.display = 'block';
+}
+function closePopup() {
+  document.getElementById('popup').style.display = 'none';
+}
+function submitForm() {
+    alert("WARNING! MetaMask will open");
+}
+  //Get the button
+  var mybutton = document.getElementById("myBtn");
+  
+  // When the user scrolls down 20px from the top of the document, show the button
+  window.onscroll = function() {scrollFunction()};
+  
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+  
+  // When the user clicks on the button, scroll to the top of the document
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+  </script>
+    <script src="js/myscript.js" charset="utf-8" ></script>
+    <script src="js/theme.js" charset="utf-8" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="jquery.min.js"></script>
+<script src="owlcarousel/owl.carousel.min.js"></script>
+
+</body>
