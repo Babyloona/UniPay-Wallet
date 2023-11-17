@@ -4,13 +4,86 @@
        
 </div>
 <div style="margin-left:20%">
-  <div class="button-container">  <button class="info-button" style="margin-right:10px" onclick="showPopup2()"><b>Important</b></button> <button class="info-button" onclick="showPopup()"><b>Start Payment</b></button></div>
-<div id="popup" class="popup2">
+
+  <div class="button-container"> 
+    <button class="info-button1" onclick="showPopup2()"><b>Important</b></button>
+    
+    <div style="margin-left: auto;"> <!-- This div aligns the following buttons to the right -->
+      <form method="post" action="/RetakeTransactionsGet" style="display: inline-block;">
+        <button class="info-button" style="margin-right: 10px;" type="submit"><b>Get transactions</b></button>
+        <input type="hidden" id="userAccountInput2" name="userAccount2" value="">
+      </form>
+    
+      <button class="info-button" onclick="showPopup()"><b>FX Payment</b></button>
+      <button class="info-button" onclick="showPopup3()"><b>Retake Payment</b></button>
+    </div>
+  </div>
+
+<div id="popup" class="popup">
   <div class="close-btn" onclick="closePopup()">X</div>
-  <p>Click Next to proceed with payment</p>
-  <input type="text" id="paymentInput" placeholder="Enter MetaMask Address..">
-  <button onclick="submitForm()">Next</button>
-</div> 
+  <form id="paymentForm" action="/FXPayment" method ='post'>
+    <label for="studentBarcode" style="color:black">Student Barcode:</label>
+    <input type="number" name="student_barcode" required> 
+  
+    <label for="fullName" style="color:black">Full Name:</label>
+    <input type="text" name="full_name" required>    
+    
+    <input type="hidden" id="userAccountInput" name="userAccount" value="">
+    <br><br>
+    <!-- Dropdown for Education Program -->
+    <label for="edProgram" style="color:black">Education Program:</label>
+    <select name="ed_program" required>
+      <option value="ITM">ITM</option>
+      <option value="ITE">ITE</option>
+      <option value="DJ">DJ</option>
+      <option value="IT">IT</option>
+      <option value="CS">CS</option>
+      <option value="TS">TS</option>
+      <option value="SE">SE</option>
+      <option value="MT">MT</option>
+    </select>
+<br><br>
+    <label for="subject" style="color:black">Subject:</label>
+    <input type="text" name="subject" required>
+    
+    <button type="submit">Connect</button>
+  </form>
+</div>
+
+
+<div id="popup3" class="popup">
+  <div class="close-btn" onclick="closePopup3()">X</div>
+  <form id="paymentForm" action="/RetakePayment" method ='post'>
+    <label for="studentBarcode" style="color:black">Student Barcode:</label>
+    <input type="number" name="student_barcode" required> 
+  
+    <label for="fullName" style="color:black">Full Name:</label>
+    <input type="text" name="full_name" required>    
+    <label for="fullName" style="color:black">Number Of Credits</label>
+    <input type="number" name="numberOfcredits" required>    
+    <input type="hidden" id="userAccountInput3" name="userAccount3" value="">
+    <br><br>
+    <!-- Dropdown for Education Program -->
+    <label for="edProgram" style="color:black">Education Program:</label>
+    <select name="ed_program" required>
+      <option value="ITM">ITM</option>
+      <option value="ITE">ITE</option>
+      <option value="DJ">DJ</option>
+      <option value="IT">IT</option>
+      <option value="CS">CS</option>
+      <option value="TS">TS</option>
+      <option value="SE">SE</option>
+      <option value="MT">MT</option>
+    </select>
+<br><br>
+    <label for="subject" style="color:black">Subject:</label>
+    <input type="text" name="subject" required>
+    
+    <button type="submit">Connect</button>
+  </form>
+</div>
+
+
 
 
     <div id="popup2" class="popup">
@@ -48,6 +121,27 @@
     </div>
 
     <div class="hr"></div>
+    <% if (username == "hehe@hehe") { %>
+      <form method="post" action='/setRequiredPriceIT' style="display: block; margin-right: 10px;">
+        <button class="info-button1" type="submit"><b>Set Price(IT,SE,MT,CS,TS)</b></button>
+        <input type="number" style="height:30px" name="retakeprice">      
+        <input type="hidden" id="userAccountInput6" name="userAccount6" value="">
+      </form>
+      <form method="post" action='/setRequiredPriceDJ' style="display: block; margin-right: 10px;">
+        <button class="info-button1" type="submit"><b>Set Price(DJ,ITE,ITM)</b></button>
+        <input type="number" style="height:30px" name="FXprice">      
+        <input type="hidden" id="userAccountInput7" name="userAccount7" value="">
+      </form>
+      <form method="post" action='/setUniAddressFXRetake' style="display: block; margin-right: 10px;">
+        <button class="info-button1" type="submit"><b>Set university Address</b></button>
+        <input type="text" style="height:30px" name="uni">      
+        <input type="hidden" id="userAccountInput5" name="userAccount5" value="">
+      </form>
+      <form method="post" action="/TransactionsGetAllFXRetake" style="display: block;">
+        <button class="info-button1" type="submit"><b>Get All transactions</b></button> 
+        <input type="hidden" id="userAccountInput4" name="userAccount4" value="">
+      </form>
+    <% }else{ %>
 <div class="col-lg-11">
     <p class="section-header">STEP 1. Determine the Amount:</p>
 
@@ -91,6 +185,7 @@
 
     <p class="info-paragraph warning">Thank you for choosing this convenient payment method. We appreciate your cooperation.</p>
 </div>
+<%}%>
   </div>
 <div class="solid"></div>
 
@@ -109,7 +204,7 @@
 
 </div></main>
 <script>
-
+connect()
   function showPopup2() {
     document.getElementById('popup2').style.display = 'block';
 }
@@ -117,7 +212,13 @@
 function closePopup2() {
     document.getElementById('popup2').style.display = 'none';
 } 
+function showPopup3() {
+  document.getElementById('popup3').style.display = 'block';
+}
 
+function closePopup3() {
+  document.getElementById('popup3').style.display = 'none';
+} 
         function showPopup() {
             document.getElementById('popup').style.display = 'block';
         }
@@ -148,6 +249,30 @@ function closePopup2() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
   }
+  async function connect(){
+    try {
+      // Requesting accounts from the user's wallet
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+  
+      // Access the first account in the array
+      const userAccount = accounts[0];
+  
+      console.log(userAccount);
+      document.getElementById('userAccountInput').value = userAccount;
+      document.getElementById('userAccountInput2').value = userAccount;
+      document.getElementById('userAccountInput3').value = userAccount;
+      
+    document.getElementById('userAccountInput6').value = userAccount;
+    document.getElementById('userAccountInput4').value = userAccount;
+    document.getElementById('userAccountInput5').value = userAccount;
+      document.getElementById('window').value = window.ethereum;
+      return userAccount;
+      
+    } catch (error) {
+      console.error('Error connecting to Ethereum:', error);
+      return null; // or handle the error in some way
+    }
+   }
   </script>
     <script src="js/myscript.js" charset="utf-8" ></script>
     <script src="js/theme.js" charset="utf-8" ></script>
