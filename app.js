@@ -207,6 +207,79 @@ app.post("/saved/:_id",async function(req,res){
 // })
 // databaseAdd.save()
 
+app.post('/IDcardPayment', async (req, res) => {
+          try {
+            
+            const contractABI = IDCARD_ABI; 
+            const contractAddress = process.env.contractAddress_idcard; 
+            const IDcardContract = new web3.eth.Contract(contractABI,contractAddress);
+            
+            console.log(IDcardContract.methods); 
+            let account1 = await account.findOne({email:req.user.username})
+            console.log(req.body.userAccount)
+                 try {
+                  console.log(req.body.userAccount);
+                  console.log(req.body.photo);
+                  // Construct the transaction object
+                  const transactionObject = {
+                    from: req.body.userAccount,
+                    to:contractAddress, // You need to set an appropriate gas limit based on your contract's complexity
+                    gasPrice: 100000000000,
+                    value: web3.utils.toWei((0.0015).toString(), 'ether'),
+                    data: IDcardContract.methods.makePayment(
+                        req.body.studentBarcode, req.body.comments,req.body.photo ,req.body.fullName
+                    ).encodeABI(),
+                    // Add other transaction parameters as needed
+                };
+                
+                  // Sign the transaction
+                  const signedTransaction = await web3.eth.accounts.signTransaction(transactionObject, account1.privateKey);
+              
+                  // Send the raw transaction
+                  const transactionHash = await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
+              
+                  // Handle the transactionHash as needed
+                  console.log('Transaction Hash:', transactionHash);
+                } catch (error) {
+                  if (error.message.includes('insufficient funds')) {
+                    res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+                } else if (error.message.includes('max fee per gas less than block base fee')) {
+                  res.render('error', { errorMessage: 'Gas fee is not suitable' });
+              } 
+              else if (error.message.includes('value "aj" at "/0" must pass "address" validation')) {
+                res.render('error', { errorMessage: 'Input is not suitable for Address' });
+            } 
+              else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+                res.render('error', { errorMessage: 'IYou are not Authorized' });
+            } else if (error.message.includes('contract') && error.message.includes('include')) {
+                res.render('error', { errorMessage: 'Contract error' });
+            } 
+            else{
+              res.render('error', { errorMessage: error});
+            }
+                }
+              
+              res.render('id_card',{username:req.user.username,account:account1})
+            } catch (error) {
+              if (error.message.includes('insufficient funds')) {
+                res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+            } else if (error.message.includes('max fee per gas less than block base fee')) {
+              res.render('error', { errorMessage: 'Gas fee is not suitable' });
+          } 
+          else if (error.message.includes('value "aj" at "/0" must pass "address" validation')) {
+            res.render('error', { errorMessage: 'Input is not suitable for Address' });
+        } 
+          else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+            res.render('error', { errorMessage: 'IYou are not Authorized' });
+        } else if (error.message.includes('contract') && error.message.includes('include')) {
+            res.render('error', { errorMessage: 'Contract error' });
+        } 
+        else{
+          res.render('error', { errorMessage: error});
+        }
+            }
+  });
+
 app.get("/search", function(req, res){
   res.render('search',{username:req.user.username})
 })
