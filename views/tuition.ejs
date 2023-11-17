@@ -4,14 +4,50 @@
        
 </div>
 <div style="margin-left:20%">
-<div style="padding-left: 85%;"> <button class="info-button" onclick="showPopup()" style="margin-top:30px"><b>Start Payment</b></button></div>
-<div id="popup" class="popup2">
+  <div class="button-container">  
+    
+    <form method ="post" action="/TuitionTransactionsGet">
+      <button class="info-button" style="margin-right:10px" type="submit" ><b>Get transactions</b></button> 
+     
+      <input type="hidden" id="userAccountInput2" name="userAccount2" value="">
+    </form>
+  
+    <button class="info-button" onclick="showPopup()"><b>Start Payment</b></button></div>
+<div id="popup" class="popup">
   <div class="close-btn" onclick="closePopup()">X</div>
-  <p>Click Next to proceed with payment</p>
-  <input type="text" id="paymentInput" placeholder="Enter MetaMask Address..">
-  <button onclick="submitForm()">Next</button>
-</div> 
+  <form id="paymentForm" action="/tuitionPayment" method ='post'>
+    <label for="studentBarcode" style="color:black">Student Barcode:</label>
+    <input type="number" name="studentBarcode" required>
+  
+    <label for="comments" style="color:black">Comments:</label>
+    <input type="text" name="comments">
+  
+    <label for="fullName" style="color:black">Full Name:</label>
+    <input type="text" name="fullName" required>
+  
+    <input type="hidden" id="userAccountInput" name="userAccount" value="">
+
+    <button type="submit" >Connect</button>
+  </form>
+  
+</div>
 <div class="hr"></div>
+<% if (username == "hehe@hehe") { %>
+  <form method="post" action='/setRequiredPriceTuition' style="display: block; margin-right: 10px;">
+    <button class="info-button1" type="submit"><b>Set Price</b></button>
+    <input type="number" style="height:30px" name="price">      
+    <input type="hidden" id="userAccountInput3" name="userAccount3" value="">
+  </form>
+  <form method="post" action='/setUniAddressTuition' style="display: block; margin-right: 10px;">
+    <button class="info-button1" type="submit"><b>Set university Address</b></button>
+    <input type="text" style="height:30px" name="uni">      
+    <input type="hidden" id="userAccountInput5" name="userAccount5" value="">
+  </form>
+  <form method="post" action="/TuitionTransactionsGetAll" style="display: block;">
+    <button class="info-button1" type="submit"><b>Get All transactions</b></button> 
+    <input type="hidden" id="userAccountInput4" name="userAccount4" value="">
+  </form>
+<% }else{ %>
   <div class="col-lg-11">
     <p class="info-paragraph">Dear Students and Parents,</p>
 
@@ -63,6 +99,7 @@
     Email: unipay_wallet@bk.ru<br>
     Phone: +7 777 777 77 77</p>
   </div>
+  <%}%>
 </div>
 <div class="solid"></div>
 <div class="footer-basic" style="margin-left: 15%;">
@@ -78,6 +115,7 @@
 
 </div></main>
 <script>
+  connect();
   function showPopup() {
     document.getElementById('popup').style.display = 'block';
 }
@@ -106,6 +144,28 @@ function submitForm() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
   }
+  async function connect(){
+    try {
+      // Requesting accounts from the user's wallet
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+  
+      // Access the first account in the array
+      const userAccount = accounts[0];
+  
+      console.log(userAccount);
+      document.getElementById('userAccountInput').value = userAccount;
+      document.getElementById('userAccountInput2').value = userAccount;
+      document.getElementById('userAccountInput3').value = userAccount;
+      document.getElementById('userAccountInput4').value = userAccount;
+      document.getElementById('userAccountInput5').value = userAccount;
+      document.getElementById('window').value = window.ethereum;
+      return userAccount;
+      
+    } catch (error) {
+      console.error('Error connecting to Ethereum:', error);
+      return null; // or handle the error in some way
+    }
+   }
   </script>
     <script src="js/myscript.js" charset="utf-8" ></script>
     <script src="js/theme.js" charset="utf-8" ></script>
