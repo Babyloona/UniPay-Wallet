@@ -1,0 +1,43 @@
+<!-- transactions.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transactions Details</title>
+  <style>
+    body{
+        background-color: #0f2053 ;
+    }
+    /* Add your styling here */
+    .container {
+        background-color: white;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      padding: 7px;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="color: white;text-align:center">Dormitory Transactions</h1>
+
+  <% transactions.forEach((transaction, index) => { %>
+    <div class="container">
+      <h2>Transaction <%= index + 1 %></h2>
+      <p>Contract ID: <%= transaction.contract_id %></p>
+      <p>Student Address: <%= transaction.student_address %></p>
+      <p>Student Barcode: <%= transaction.student_barcode %></p>
+      <p>Full Name: <%= transaction.full_name %></p>
+      <p>Room Number: <%= transaction.roomNumber %></p>
+      <p>For How Many Months: <%= transaction.howmanymonths %></p>
+      <p>Which Months: <%= transaction.whichmonths %></p>
+      <p>Comments: <%= transaction.comments %></p>
+      <p>Required Price: <%= transaction.requiredPrice %></p>
+      <p>Timestamp: <%= transaction.timestamp %></p>
+      <p>Paid: <%= transaction.paid %></p>
+    </div>
+  <% }) %>
+
+</body>
+</html>
