@@ -280,6 +280,77 @@ app.post('/IDcardPayment', async (req, res) => {
             }
   });
 
+
+app.post('/IDTransactionsGetAll',async(req,res)=>{
+  try{
+  
+    const contractABI2 = IDCARD_ABI; 
+    const contractAddress2 = process.env.contractAddress_idcard; 
+  const IDcardContract = new web3.eth.Contract(contractABI2, contractAddress2);
+try {
+  let account1 = await account.findOne({ email: req.user.username });
+  
+  const Transactions = await IDcardContract.methods.getAllTransactions().call({ from: req.body.userAccount4 });
+  // Convert BigInt values to strings before serializing
+  // Extracting the actual data using string keys
+  const cleanedTransactions = Transactions.map(transaction => ({
+    contract_id: transaction.contract_id,
+    student_address: transaction.student_address,
+    student_barcode: transaction.student_barcode,
+    comments: transaction.comments,        
+    photo: transaction.photo,
+    full_name: transaction.full_name,
+    requiredPrice: transaction.requiredPrice,
+    timestamp: transaction.timestamp,
+    paid: transaction.paid,
+  }));
+
+  console.log('Cleaned Transactions:', cleanedTransactions);
+  
+  
+  res.render('idcardTransactions',{transactions:cleanedTransactions})
+  
+} catch (error) {
+  // Log the error for debugging purposes
+  if (error.message.includes('insufficient funds')) {
+    res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+} else if (error.message.includes('max fee per gas less than block base fee')) {
+  res.render('error', { errorMessage: 'Gas fee is not suitable' });
+} 
+else if (error.message.includes('value "aj" at "/0" must pass "address" validation')) {
+res.render('error', { errorMessage: 'Input is not suitable for Address' });
+} 
+else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+res.render('error', { errorMessage: 'IYou are not Authorized' });
+} else if (error.message.includes('contract') && error.message.includes('include')) {
+res.render('error', { errorMessage: 'Contract error' });
+} 
+else{
+res.render('error', { errorMessage: error});
+}
+}
+} catch (error) {
+// Log the error for debugging purposes
+if (error.message.includes('insufficient funds')) {
+  res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+} else if (error.message.includes('max fee per gas less than block base fee')) {
+res.render('error', { errorMessage: 'Gas fee is not suitable' });
+} 
+else if (error.message.includes('value "aj" at "/0" must pass "address" validation')) {
+res.render('error', { errorMessage: 'Input is not suitable for Address' });
+} 
+else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+res.render('error', { errorMessage: 'IYou are not Authorized' });
+} else if (error.message.includes('contract') && error.message.includes('include')) {
+res.render('error', { errorMessage: 'Contract error' });
+} 
+else{
+res.render('error', { errorMessage: error});
+}
+}
+});
+
+
 app.get("/search", function(req, res){
   res.render('search',{username:req.user.username})
 })
