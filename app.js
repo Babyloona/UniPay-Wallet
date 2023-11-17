@@ -57,6 +57,589 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 //model and collectiosn
+const DORM_ABI = [{
+  "inputs": [],
+  "stateMutability": "payable",
+  "type": "constructor"
+},
+{
+  "inputs": [],
+  "name": "checkBalanceofContract",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "checkMyBalance",
+  "outputs": [
+    {
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "getAllTransactions",
+  "outputs": [
+    {
+      "components": [
+        {
+          "internalType": "uint256",
+          "name": "contract_id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "student_address",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "student_barcode",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "full_name",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "roomNumber",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "howmanymonths",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "whichmonths",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "comments",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "requiredPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "paid",
+          "type": "bool"
+        }
+      ],
+      "internalType": "struct DormitoryPayment.Dormitory[]",
+      "name": "",
+      "type": "tuple[]"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "getCommission",
+  "outputs": [],
+  "stateMutability": "payable",
+  "type": "function"
+},
+{
+  "inputs": [],
+  "name": "getMyTransactions",
+  "outputs": [
+    {
+      "components": [
+        {
+          "internalType": "uint256",
+          "name": "contract_id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "student_address",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "student_barcode",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "full_name",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "roomNumber",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "howmanymonths",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "whichmonths",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "comments",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "requiredPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "paid",
+          "type": "bool"
+        }
+      ],
+      "internalType": "struct DormitoryPayment.Dormitory[]",
+      "name": "",
+      "type": "tuple[]"
+    }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "student_barcode",
+      "type": "uint256"
+    },
+    {
+      "internalType": "string",
+      "name": "comments",
+      "type": "string"
+    },
+    {
+      "internalType": "string",
+      "name": "_full_name",
+      "type": "string"
+    },
+    {
+      "internalType": "uint256",
+      "name": "roomNumber",
+      "type": "uint256"
+    },
+    {
+      "internalType": "uint256",
+      "name": "forHowManyMonths",
+      "type": "uint256"
+    },
+    {
+      "internalType": "string",
+      "name": "whichMonths",
+      "type": "string"
+    }
+  ],
+  "name": "makePayment",
+  "outputs": [],
+  "stateMutability": "payable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "required_price",
+      "type": "uint256"
+    }
+  ],
+  "name": "setRequiredPrice",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+},
+{
+  "inputs": [
+    {
+      "internalType": "address",
+      "name": "uni_address",
+      "type": "address"
+    }
+  ],
+  "name": "setUniversityAddress",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+}
+];
+
+const web3 = new Web3(process.env.web3);
+ 
+
+app.post('/dormPayment', async (req, res) => {
+    try {
+      const contractABI = DORM_ABI;
+      const contractAddress = process.env.contractAddress_dorm ; 
+      const dormitoryContract = new web3.eth.Contract(contractABI,contractAddress);
+      
+      console.log(dormitoryContract.methods); 
+      let account1 = await account.findOne({email:req.user.username})
+      console.log(req.body.userAccount)
+           try {
+            console.log(req.body.userAccount);
+        
+            // Construct the transaction object
+            const transactionObject = {
+              from: req.body.userAccount,
+              to:contractAddress, // You need to set an appropriate gas limit based on your contract's complexity
+              gasPrice: 1000000000,
+              value: web3.utils.toWei((0.0015 * req.body.forHowManyMonths).toString(), 'ether'),
+              data: dormitoryContract.methods.makePayment(
+                  req.body.studentBarcode, req.body.comments, req.body.fullName, req.body.roomNumber, req.body.forHowManyMonths, req.body.whichMonths
+              ).encodeABI(),
+              // Add other transaction parameters as needed
+          };
+          
+            // Sign the transaction
+            const signedTransaction = await web3.eth.accounts.signTransaction(transactionObject, account1.privateKey);
+        
+            // Send the raw transaction
+            const transactionHash = await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
+        
+            // Handle the transactionHash as needed
+            console.log('Transaction Hash:', transactionHash);
+            res.render('dormitory',{username:req.user.username,account:account1})
+          } catch (error) {
+            console.log(error)
+            if (error.message.includes('insufficient funds')) {
+              res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+          } else if (error.message.includes('max fee per gas less than block base fee')) {
+            res.render('error', { errorMessage: 'Gas fee is not suitable' });
+        } 
+        else if (error.message.includes('must pass "address" validation')) {
+          res.render('error', { errorMessage: 'Input is not suitable for Address' });
+      } 
+        else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+          res.render('error', { errorMessage: 'IYou are not Authorized' });
+      } else if (error.message.includes('contract') && error.message.includes('include')) {
+          res.render('error', { errorMessage: 'Contract error' });
+      } 
+      else{
+        res.render('error', { errorMessage: error});
+      }
+          }
+        
+       
+      } catch (error) {
+        console.log(error)
+        if (error.message.includes('insufficient funds')) {
+          res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+      } else if (error.message.includes('max fee per gas less than block base fee')) {
+        res.render('error', { errorMessage: 'Gas fee is not suitable' });
+    } 
+    else if (error.message.includes('value "aj" at "/0" must pass "address" validation')) {
+      res.render('error', { errorMessage: 'Input is not suitable for Address' });
+  } 
+    else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+      res.render('error', { errorMessage: 'IYou are not Authorized' });
+  } else if (error.message.includes('contract') && error.message.includes('include')) {
+      res.render('error', { errorMessage: 'Contract error' });
+  } 
+  else{
+    res.render('error', { errorMessage: error});
+  }
+    }
+  });
+app.post('/DormTransactionsGet',async(req,res)=>{
+      try{      
+      const contractABI2 = DORM_ABI;        
+      const contractAddress2 = process.env.contractAddress_dorm; 
+      const dormitoryContract2 = new web3.eth.Contract(contractABI2, contractAddress2);
+    try {
+      let account1 = await account.findOne({ email: req.user.username });
+      
+      const Transactions = await dormitoryContract2.methods.getMyTransactions().call({ from: req.body.userAccount2 });
+      // Convert BigInt values to strings before serializing
+      // Extracting the actual data using string keys
+      const cleanedTransactions = Transactions.map(transaction => ({
+        contract_id: transaction.contract_id,
+        student_address: transaction.student_address,
+        student_barcode: transaction.student_barcode,
+        full_name: transaction.full_name,
+        roomNumber: transaction.roomNumber,
+        howmanymonths: transaction.howmanymonths,
+        whichmonths: transaction.whichmonths,
+        comments: transaction.comments,
+        requiredPrice: transaction.requiredPrice,
+        timestamp: transaction.timestamp,
+        paid: transaction.paid,
+      }));
+
+      console.log('Cleaned Transactions:', cleanedTransactions);
+      
+      res.render('transactions',{transactions:cleanedTransactions})
+    } catch (error) {
+      // Log the error for debugging purposes
+      if (error.message.includes('insufficient funds')) {
+        res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+    } else if (error.message.includes('max fee per gas less than block base fee')) {
+      res.render('error', { errorMessage: 'Gas fee is not suitable' });
+  } 
+  else if (error.message.includes('value "aj" at "/0" must pass "address" validation')) {
+    res.render('error', { errorMessage: 'Input is not suitable for Address' });
+} 
+  else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+    res.render('error', { errorMessage: 'IYou are not Authorized' });
+} else if (error.message.includes('contract') && error.message.includes('include')) {
+    res.render('error', { errorMessage: 'Contract error' });
+} 
+else{
+  res.render('error', { errorMessage: error});
+}
+    }
+  } catch (error) {
+    // Log the error for debugging purposes
+    if (error.message.includes('insufficient funds')) {
+      res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+  } else if (error.message.includes('max fee per gas less than block base fee')) {
+    res.render('error', { errorMessage: 'Gas fee is not suitable' });
+} 
+else if (error.message.includes('value "aj" at "/0" must pass "address" validation')) {
+  res.render('error', { errorMessage: 'Input is not suitable for Address' });
+} 
+else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+  res.render('error', { errorMessage: 'IYou are not Authorized' });
+} else if (error.message.includes('contract') && error.message.includes('include')) {
+  res.render('error', { errorMessage: 'Contract error' });
+} 
+else{
+res.render('error', { errorMessage: error});
+}
+  }
+});
+
+app.post('/DormTransactionsGetAll',async(req,res)=>{
+  try{
+  const contractABI2 = DORM_ABI;    
+  const contractAddress2 = process.env.contractAddress_dorm; 
+  const dormitoryContract2 = new web3.eth.Contract(contractABI2, contractAddress2);
+try {
+  let account1 = await account.findOne({ email: req.user.username });
+  
+  const Transactions = await dormitoryContract2.methods.getAllTransactions().call({ from: req.body.userAccount4 });
+  // Convert BigInt values to strings before serializing
+  // Extracting the actual data using string keys
+  const cleanedTransactions = Transactions.map(transaction => ({
+    contract_id: transaction.contract_id,
+    student_address: transaction.student_address,
+    student_barcode: transaction.student_barcode,
+    full_name: transaction.full_name,
+    roomNumber: transaction.roomNumber,
+    howmanymonths: transaction.howmanymonths,
+    whichmonths: transaction.whichmonths,
+    comments: transaction.comments,
+    requiredPrice: transaction.requiredPrice,
+    timestamp: transaction.timestamp,
+    paid: transaction.paid,
+  }));
+
+  console.log('Cleaned Transactions:', cleanedTransactions);
+
+  res.render('transactions',{transactions:cleanedTransactions})
+
+} catch (error) {
+  // Log the error for debugging purposes
+  if (error.message.includes('insufficient funds')) {
+    res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+} else if (error.message.includes('max fee per gas less than block base fee')) {
+  res.render('error', { errorMessage: 'Gas fee is not suitable' });
+} 
+else if (error.message.includes('value "aj" at "/0" must pass "address" validation')) {
+res.render('error', { errorMessage: 'Input is not suitable for Address' });
+} 
+else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+res.render('error', { errorMessage: 'IYou are not Authorized' });
+} else if (error.message.includes('contract') && error.message.includes('include')) {
+res.render('error', { errorMessage: 'Contract error' });
+} 
+else{
+res.render('error', { errorMessage: error});
+}
+}
+} catch (error) {
+// Log the error for debugging purposes
+console.error('Error in /DormTransactionsGet (outer try block):', error);
+
+// Send an error response
+res.status(500).send('Internal Server Error');
+}
+});
+app.post('/setUniAddress',async(req,res)=>{
+  try{
+  const contractABI2 = DORM_ABI;
+  const contractAddress2 = process.env.contractAddress_dorm; 
+  const dormitoryContract2 = new web3.eth.Contract(contractABI2, contractAddress2);
+ 
+  let account1 = await account.findOne({email:req.user.username})
+  const privateKey = account1.privateKey;
+console.log(privateKey)
+  const gasLimit = 200000;  // Adjust the gas limit according to your contract
+  const gasPrice = web3.utils.toWei('50', 'gwei');  // Adjust the gas price accordingly
+  
+  // Call the contract funct\ // Replace with the desired value
+  const data = dormitoryContract2.methods.setUniversityAddress(req.body.uni).encodeABI();
+  
+  // Send the transaction
+  const transactionObject = {
+      from: req.body.userAccount5,
+      to: contractAddress2,
+      gas: gasLimit,
+      gasPrice: gasPrice,
+      data: data,
+  };
+  
+  web3.eth.accounts.signTransaction(transactionObject, privateKey)
+      .then(signedTx => web3.eth.sendSignedTransaction(signedTx.rawTransaction))
+      .then(receipt => {
+          console.log('Transaction receipt:', receipt);
+          res.render('dormitory',{username:req.user.username,account:account1})
+      })
+      .catch(error => {
+        if (error.message.includes('insufficient funds')) {
+          res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+      } else if (error.message.includes('max fee per gas less than block base fee')) {
+        res.render('error', { errorMessage: 'Gas fee is not suitable' });
+    } 
+    else if (error.message.includes('value "aj" at "/0" must pass "address" validation')) {
+      res.render('error', { errorMessage: 'Input is not suitable for Address' });
+  } 
+    else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+      res.render('error', { errorMessage: 'IYou are not Authorized' });
+  } else if (error.message.includes('contract') && error.message.includes('include')) {
+      res.render('error', { errorMessage: 'Contract error' });
+  } 
+  else{
+    res.render('error', { errorMessage: error});
+  }
+      });
+    
+}catch(error){
+  if (error.message.includes('insufficient funds')) {
+    res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+} else if (error.message.includes('max fee per gas less than block base fee')) {
+  res.render('error', { errorMessage: 'Gas fee is not suitable' });
+} 
+else if (error.message.includes('must pass "address" validation')) {
+res.render('error', { errorMessage: 'Input is not suitable for Address' });
+} 
+else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+res.render('error', { errorMessage: 'IYou are not Authorized' });
+} else if (error.message.includes('contract') && error.message.includes('include')) {
+res.render('error', { errorMessage: 'Contract error' });
+} 
+else{
+res.render('error', { errorMessage: error});
+}
+}
+}
+);
+app.post('/setRequiredPrice',async(req,res)=>{
+  try{
+  const contractABI2 = DORM_ABI;    
+  const contractAddress2 = process.env.contractAddress_dorm; 
+  const dormitoryContract2 = new web3.eth.Contract(contractABI2, contractAddress2);
+ 
+  let account1 = await account.findOne({email:req.user.username})
+  const privateKey = account1.privateKey;
+console.log(privateKey)
+  const gasLimit = 200000;  // Adjust the gas limit according to your contract
+  const gasPrice = web3.utils.toWei('50', 'gwei');  // Adjust the gas price accordingly
+  
+  // Call the contract funct\ // Replace with the desired value
+  const data = dormitoryContract2.methods.setRequiredPrice(req.body.price).encodeABI();
+  
+  // Send the transaction
+  const transactionObject = {
+      from: req.body.userAccount3,
+      to: contractAddress2,
+      gas: gasLimit,
+      gasPrice: gasPrice,
+      data: data,
+  };
+  
+  web3.eth.accounts.signTransaction(transactionObject, privateKey)
+      .then(signedTx => web3.eth.sendSignedTransaction(signedTx.rawTransaction))
+      .then(receipt => {
+          console.log('Transaction receipt:', receipt);
+          res.render('dormitory',{username:req.user.username,account:account1})
+      })
+      .catch(error => {
+        if (error.message.includes('insufficient funds')) {
+          res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+      } else if (error.message.includes('max fee per gas less than block base fee')) {
+        res.render('error', { errorMessage: 'Gas fee is not suitable' });
+    } 
+    else if (error.message.includes('value "aj" at "/0" must pass "address" validation')) {
+      res.render('error', { errorMessage: 'Input is not suitable for Address' });
+  } 
+    else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+      res.render('error', { errorMessage: 'IYou are not Authorized' });
+  } else if (error.message.includes('contract') && error.message.includes('include')) {
+      res.render('error', { errorMessage: 'Contract error' });
+  } 
+  else{
+    res.render('error', { errorMessage: error});
+  }
+      });
+    }catch(error){
+      if (error.message.includes('insufficient funds')) {
+        res.render('error', { errorMessage: 'Not enough cryptocurrency to make the payment' });
+    } else if (error.message.includes('max fee per gas less than block base fee')) {
+      res.render('error', { errorMessage: 'Gas fee is not suitable' });
+  } 
+  else if (error.message.includes('value "aj" at "/0" must pass "address" validation')) {
+    res.render('error', { errorMessage: 'Input is not suitable for Address' });
+} 
+  else if (error.message.includes(" Cannot read properties of undefined (reading 'username')")) {
+    res.render('error', { errorMessage: 'IYou are not Authorized' });
+} else if (error.message.includes('contract') && error.message.includes('include')) {
+    res.render('error', { errorMessage: 'Contract error' });
+} 
+else{
+  res.render('error', { errorMessage: error});
+}
+    }
+});
+
+
 
 app.get("/", function(req, res){
   res.render("home")
